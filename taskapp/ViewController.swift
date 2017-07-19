@@ -10,11 +10,16 @@ import UIKit
 import RealmSwift
 import UserNotifications
 
-class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
+class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate,UISearchBarDelegate {
     
     @IBOutlet weak var tableview: UITableView!
+    @IBOutlet weak var SearchBar: UISearchBar!
+    
+    
+    var task:Task!
     //realm のインスタンス呼び出し
     let  realm  = try!Realm()
+    
     
     //データーベス内のタスクを格納するリスト
     //日付が近い順でソート
@@ -22,17 +27,47 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     //降順trueであれば昇順
     var taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
     
+    //検索結果リザルト
+    var searchResult = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        
+        //入力なしにリターンキーを押せるようにする
+        SearchBar.enablesReturnKeyAutomatically = false
+        
+        
         tableview.delegate = self
         tableview.dataSource = self
+        SearchBar.delegate = self
+        //検索ボタン押した時のメソッド
+    
     }
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //キーボードを閉じる。
+        SearchBar.endEditing(true)
+    }
+    //検索バーが変更されたときのメソッド
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        
+        //検索がからの時にすべて表示
+        if searchText.isEmpty{
+            taskArray = try! Realm().objects(Task.self).sorted(byKeyPath: "date", ascending: false)
+        }else{
+            taskArray = try! Realm().objects(Task.self).filter("Category == %@" ,searchText).sorted(byKeyPath: "date", ascending: false)
+            //searcgBr空のときの処理
+            //タイトルと一致しているれば表示
+            
+        }
+        //検索した際にテーブルビューを再リロード
+        tableview.reloadData()
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     //配列の数を返すメソッド
     //taskArrayの要素数をcountにてセルの数を調べる。
@@ -40,6 +75,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
         return taskArray.count
     }
+    
     
     //セルないの行数を表示
     // 各セルの内容を返すメソッド
@@ -53,9 +89,10 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         //task＝行数
         //formatter=日付
         //datestring=メモ？？
-      
+        
         let task = taskArray[indexPath.row]
         cell.textLabel?.text = task.title
+        searchResult = [task.title]
         
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm"
@@ -74,7 +111,7 @@ class ViewController: UIViewController,UITableViewDataSource,UITableViewDelegate
         performSegue(withIdentifier: "cellsegue", sender:nil)
     }
     // 各セルを選択した時に実行されるメソッド
-   
+    
     // セルが削除が可能なことを伝えるメソッド
     //tableView:editingStyleForRowAtIndexPath:メソッドはセルが削除が可能かどうか、並び替えが可能かどうかなどどのように編集ができるかを返すメソッド
     //indexpathは選択しているセルの行

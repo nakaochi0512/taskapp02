@@ -129,8 +129,7 @@
 				TargetAttributes = {
 					70E6DDD71EE92708003014AB = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 7LJAU9YVYL;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -343,7 +342,7 @@
 			baseConfigurationReference = 0831356CCF6D2F1D1A8E477A /* Pods-taskapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7LJAU9YVYL;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = taskapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -358,7 +357,7 @@
 			baseConfigurationReference = 4D68C94F387050AAB2DF1BA8 /* Pods-taskapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7LJAU9YVYL;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = taskapp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

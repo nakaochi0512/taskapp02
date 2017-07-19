@@ -24,9 +24,13 @@ class Task: Object {
     /// 日時
     dynamic var date = NSDate()
     
+    //カテゴリ
+    dynamic var Category = ""
+    
     /**
      id をプライマリーキーとして設定
      */
+    
     override static func primaryKey() -> String? {
         return "id"
     }

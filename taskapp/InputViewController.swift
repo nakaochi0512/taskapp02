@@ -15,7 +15,7 @@ class InputViewController: UIViewController {
     @IBOutlet weak var titleField: UITextField!
     @IBOutlet weak var uiTaxtview: UITextView!
     @IBOutlet weak var uidatepickerView: UIDatePicker!
-    
+    @IBOutlet weak var Category: UITextField!
     
     let realm = try! Realm()
     var task:Task!
@@ -30,19 +30,26 @@ class InputViewController: UIViewController {
         titleField.text = task.title
         uiTaxtview.text = task.contents
         uidatepickerView.date = task.date as Date
+        Category.text = task.Category
+        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+        
+        //Realmへの書き込み
     }
-    
     override func viewWillDisappear(_ animated: Bool) {
+        
         try! realm.write {
             self.task.title = self.titleField.text!
             self.task.contents = self.uiTaxtview.text
             self.task.date = self.uidatepickerView.date as NSDate
+            self.task.Category = self.Category.text!
             self.realm.add(self.task, update: true)
+            
+            
         }
         
         super.viewWillDisappear(animated)
